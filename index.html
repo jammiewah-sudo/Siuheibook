@@ -2,906 +2,880 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#fff8ef">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="小氣簿">
-
-  <title>小氣簿</title>
-
-  <style>
-    :root {
-      --bg: #fff8ef;
-      --card: #ffffff;
-      --text: #352b27;
-      --muted: #8b7c74;
-      --primary: #b96f52;
-      --primary-dark: #8f4f39;
-      --soft: #f7e8dc;
-      --border: #eadbd0;
-      --danger: #d95c5c;
-      --warning: #e7a33e;
-      --success: #6b9c75;
-      --shadow: 0 8px 25px rgba(75, 47, 35, .08);
-      --radius: 20px;
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Display",
-        "PingFang TC",
-        "Microsoft JhengHei",
-        sans-serif;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .app {
-      min-height: 100vh;
-      padding-bottom: 90px;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 18px 14px;
-      background: rgba(255, 248, 239, .92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(234, 219, 208, .65);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      background: var(--soft);
-      font-size: 25px;
-      box-shadow: var(--shadow);
-    }
-
-    .brand-title {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: .5px;
-    }
-
-    .brand-sub {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 2px;
-    }
-
-    .icon-btn {
-      width: 42px;
-      height: 42px;
-      border: 0;
-      border-radius: 14px;
-      background: var(--card);
-      box-shadow: var(--shadow);
-      font-size: 19px;
-    }
-
-    main {
-      width: min(760px, 100%);
-      margin: 0 auto;
-      padding: 18px;
-    }
-
-    .hero {
-      padding: 22px;
-      border-radius: 26px;
-      background: linear-gradient(135deg, #f9e5d8, #fffaf5);
-      box-shadow: var(--shadow);
-      margin-bottom: 18px;
-      border: 1px solid #f0ddd0;
-    }
-
-    .hero h1 {
-      margin: 0 0 7px;
-      font-size: 27px;
-    }
-
-    .hero p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
-    .hero-quote {
-      margin-top: 15px;
-      padding: 12px 14px;
-      background: rgba(255,255,255,.7);
-      border-radius: 14px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .stat {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      padding: 15px 10px;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-
-    .stat-number {
-      font-size: 25px;
-      font-weight: 850;
-    }
-
-    .stat-label {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 3px;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 22px 2px 11px;
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    .section-head span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .search {
-      position: relative;
-      margin-bottom: 13px;
-    }
-
-    .search input {
-      width: 100%;
-      padding: 14px 16px 14px 44px;
-      border-radius: 15px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      outline: none;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 15px;
-      top: 12px;
-      font-size: 18px;
-    }
-
-    .friends {
-      display: grid;
-      gap: 11px;
-    }
-
-    .friend-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 19px;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      box-shadow: var(--shadow);
-      transition: transform .15s ease;
-    }
-
-    .friend-card:active {
-      transform: scale(.985);
-    }
-
-    .avatar {
-      width: 52px;
-      height: 52px;
-      flex: 0 0 52px;
-      border-radius: 17px;
-      display: grid;
-      place-items: center;
-      background: var(--soft);
-      font-size: 27px;
-    }
-
-    .friend-info {
-      min-width: 0;
-      flex: 1;
-    }
-
-    .friend-name {
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .friend-meta {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .friend-score {
-      text-align: right;
-    }
-
-    .score-number {
-      font-weight: 900;
-      font-size: 19px;
-      color: var(--primary-dark);
-    }
-
-    .score-label {
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .empty {
-      background: var(--card);
-      border: 1px dashed var(--border);
-      border-radius: 20px;
-      padding: 30px 20px;
-      text-align: center;
-      color: var(--muted);
-    }
-
-    .empty-icon {
-      font-size: 42px;
-      margin-bottom: 8px;
-    }
-
-    .primary-btn {
-      width: 100%;
-      border: 0;
-      background: var(--primary);
-      color: white;
-      border-radius: 15px;
-      padding: 14px 18px;
-      font-weight: 800;
-      box-shadow: 0 7px 17px rgba(185,111,82,.25);
-    }
-
-    .secondary-btn {
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 11px 14px;
-      font-weight: 700;
-    }
-
-    .danger-btn {
-      border: 0;
-      background: #fbe4e4;
-      color: #b64444;
-      border-radius: 13px;
-      padding: 10px 13px;
-      font-weight: 700;
-    }
-
-    .small-btn {
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: 11px;
-      padding: 7px 10px;
-      font-size: 12px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      left: 50%;
-      bottom: 12px;
-      transform: translateX(-50%);
-      z-index: 30;
-      width: min(520px, calc(100% - 24px));
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: rgba(255,255,255,.94);
-      border: 1px solid var(--border);
-      border-radius: 21px;
-      box-shadow: 0 10px 35px rgba(50,30,20,.16);
-      padding: 6px;
-      backdrop-filter: blur(15px);
-    }
-
-    .nav-btn {
-      border: 0;
-      background: transparent;
-      border-radius: 16px;
-      padding: 9px 4px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .nav-btn.active {
-      background: var(--soft);
-      color: var(--primary-dark);
-    }
-
-    .nav-icon {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 2px;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      background: rgba(25,17,13,.5);
-      padding: 15px;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .modal.show {
-      display: flex;
-    }
-
-    .modal-box {
-      width: min(620px, 100%);
-      max-height: 92vh;
-      overflow-y: auto;
-      background: var(--bg);
-      border-radius: 27px 27px 18px 18px;
-      padding: 20px;
-      box-shadow: 0 -5px 40px rgba(0,0,0,.2);
-      animation: slideUp .22s ease;
-    }
-
-    @keyframes slideUp {
-      from {
-        transform: translateY(30px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 17px;
-    }
-
-    .modal-head h2 {
-      margin: 0;
-      font-size: 21px;
-    }
-
-    .close-btn {
-      border: 0;
-      background: var(--card);
-      border-radius: 12px;
-      width: 38px;
-      height: 38px;
-      font-size: 19px;
-    }
-
-    .field {
-      margin-bottom: 14px;
-    }
-
-    .field label {
-      display: block;
-      font-size: 12px;
-      font-weight: 800;
-      margin: 0 0 7px 3px;
-    }
-
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 13px;
-      outline: none;
-    }
-
-    .field textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-
-    .emoji-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .emoji-option {
-      width: 45px;
-      height: 45px;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      background: var(--card);
-      font-size: 22px;
-    }
-
-    .emoji-option.selected {
-      background: var(--soft);
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(185,111,82,.12);
-    }
-
-    .anger-row {
-      display: flex;
-      gap: 7px;
-    }
-
-    .anger-option {
-      flex: 1;
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: 13px;
-      padding: 10px 4px;
-      font-size: 12px;
-    }
-
-    .anger-option.selected {
-      background: var(--soft);
-      border-color: var(--primary);
-      color: var(--primary-dark);
-      font-weight: 800;
-    }
-
-    .preview-photo {
-      width: 100%;
-      max-height: 220px;
-      object-fit: cover;
-      border-radius: 15px;
-      margin-top: 8px;
-      display: none;
-    }
-
-    .event-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 11px;
-      box-shadow: var(--shadow);
-    }
-
-    .event-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .event-person {
-      font-weight: 850;
-    }
-
-    .event-date {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 3px;
-    }
-
-    .event-category {
-      background: var(--soft);
-      color: var(--primary-dark);
-      padding: 6px 9px;
-      border-radius: 10px;
-      font-size: 10px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .event-title {
-      font-size: 16px;
-      font-weight: 800;
-      margin: 13px 0 6px;
-    }
-
-    .event-detail {
-      color: #62554e;
-      font-size: 13px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-
-    .event-bottom {
-      margin-top: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .stars {
-      letter-spacing: 1px;
-    }
-
-    .event-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .event-photo {
-      width: 100%;
-      max-height: 230px;
-      object-fit: cover;
-      border-radius: 14px;
-      margin-top: 12px;
-    }
-
-    .friend-detail-head {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 17px;
-      box-shadow: var(--shadow);
-    }
-
-    .friend-detail-head .avatar {
-      width: 65px;
-      height: 65px;
-      flex-basis: 65px;
-      font-size: 34px;
-    }
-
-    .detail-name {
-      font-size: 21px;
-      font-weight: 900;
-    }
-
-    .detail-stats {
-      display: flex;
-      gap: 15px;
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 4px;
-    }
-
-    .warning-levels {
-      display: grid;
-      gap: 10px;
-    }
-
-    .warning-level {
-      width: 100%;
-      text-align: left;
-      padding: 15px;
-      border-radius: 17px;
-      border: 1px solid var(--border);
-      background: var(--card);
-    }
-
-    .warning-level strong {
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .warning-level span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .warning-level.yellow {
-      border-left: 5px solid #e7c34b;
-    }
-
-    .warning-level.orange {
-      border-left: 5px solid #e89a3d;
-    }
-
-    .warning-level.red {
-      border-left: 5px solid #d95c5c;
-    }
-
-    .warning-level.black {
-      border-left: 5px solid #444;
-    }
-
-    .warning-paper {
-      background: #fffdf6;
-      color: #29231f;
-      padding: 24px 20px;
-      border: 2px solid #e1d7c4;
-      box-shadow: 0 8px 20px rgba(60,40,20,.1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .warning-paper:before {
-      content: "";
-      position: absolute;
-      inset: 9px;
-      border: 1px dashed #c9bda8;
-      pointer-events: none;
-    }
-
-    .paper-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .paper-school {
-      text-align: center;
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: #766b5e;
-    }
-
-    .paper-title {
-      text-align: center;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 25px;
-      font-weight: 900;
-      margin: 9px 0 3px;
-    }
-
-    .paper-subtitle {
-      text-align: center;
-      font-size: 12px;
-      color: #71685e;
-      margin-bottom: 19px;
-    }
-
-    .paper-line {
-      border-bottom: 1px solid #bfb5a5;
-      display: inline-block;
-      min-width: 100px;
-      height: 19px;
-      vertical-align: bottom;
-    }
-
-    .paper-section {
-      margin: 16px 0;
-    }
-
-    .paper-section-title {
-      font-weight: 900;
-      font-size: 13px;
-      margin-bottom: 7px;
-    }
-
-    .paper-text {
-      font-size: 13px;
-      line-height: 1.75;
-    }
-
-    .paper-warning {
-      margin: 15px 0;
-      padding: 11px;
-      border: 1px solid #d6c7b0;
-      background: #faf3e5;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .paper-check {
-      margin: 5px 0;
-      font-size: 12px;
-    }
-
-    .paper-sign {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      font-size: 11px;
-    }
-
-    .paper-footer {
-      text-align: center;
-      margin-top: 20px;
-      color: #857a6d;
-      font-size: 10px;
-    }
-
-    .warning-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .settings-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .settings-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .toggle {
-      width: 48px;
-      height: 28px;
-      border: 0;
-      border-radius: 20px;
-      background: #d8ccc5;
-      position: relative;
-    }
-
-    .toggle:after {
-      content: "";
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: white;
-      top: 3px;
-      left: 3px;
-      transition: .2s;
-    }
-
-    .toggle.on {
-      background: var(--primary);
-    }
-
-    .toggle.on:after {
-      left: 23px;
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 92px;
-      transform: translateX(-50%) translateY(20px);
-      background: #332924;
-      color: white;
-      padding: 11px 15px;
-      border-radius: 13px;
-      font-size: 12px;
-      opacity: 0;
-      pointer-events: none;
-      transition: .25s;
-      z-index: 200;
-      max-width: calc(100% - 40px);
-      text-align: center;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    body.dark {
-      --bg: #211b18;
-      --card: #2c2521;
-      --text: #f6eee7;
-      --muted: #b8aaa1;
-      --primary: #d38a69;
-      --primary-dark: #edb093;
-      --soft: #49332a;
-      --border: #493d36;
-      --shadow: 0 8px 25px rgba(0,0,0,.2);
-    }
-
-    body.dark .topbar {
-      background: rgba(33,27,24,.92);
-    }
-
-    body.dark .hero {
-      background: linear-gradient(135deg, #463229, #2b2420);
-      border-color: #56453b;
-    }
-
-    body.dark .event-detail {
-      color: #d0c4bc;
-    }
-
-    body.dark .warning-paper {
-      background: #f9f4e9;
-      color: #29231f;
-    }
-
-    body.dark .bottom-nav {
-      background: rgba(44,37,33,.95);
-    }
-
-    @media (min-width: 700px) {
-      .modal {
-        align-items: center;
-      }
-
-      .modal-box {
-        border-radius: 27px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#fff8ef">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="小氣簿">
+
+<title>小氣簿</title>
+
+<style>
+:root{
+  --bg:#fff8ef;
+  --card:#fff;
+  --text:#352b27;
+  --muted:#8b7c74;
+  --primary:#b96f52;
+  --primary-dark:#8f4f39;
+  --soft:#f7e8dc;
+  --border:#eadbd0;
+  --danger:#d95c5c;
+  --shadow:0 8px 25px rgba(75,47,35,.08);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,
+  "SF Pro Display","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+
+.app{
+  min-height:100vh;
+  padding-bottom:90px;
+}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 18px 13px;
+  background:rgba(255,248,239,.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(234,219,208,.7);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-icon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:var(--soft);
+  font-size:25px;
+  box-shadow:var(--shadow);
+}
+
+.brand-title{
+  font-size:20px;
+  font-weight:800;
+}
+
+.brand-sub{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:2px;
+}
+
+.icon-btn{
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:14px;
+  background:var(--card);
+  box-shadow:var(--shadow);
+  font-size:19px;
+}
+
+main{
+  width:min(760px,100%);
+  margin:auto;
+  padding:18px;
+}
+
+.hero{
+  padding:22px;
+  border-radius:26px;
+  background:linear-gradient(135deg,#f9e5d8,#fffaf5);
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
+  border:1px solid #f0ddd0;
+}
+
+.hero h1{
+  margin:0 0 7px;
+  font-size:27px;
+}
+
+.hero p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+  font-size:14px;
+}
+
+.hero-quote{
+  margin-top:15px;
+  padding:12px 14px;
+  background:rgba(255,255,255,.7);
+  border-radius:14px;
+  font-size:13px;
+  font-weight:700;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.stat{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:15px 10px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.stat-number{
+  font-size:25px;
+  font-weight:850;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:22px 2px 11px;
+}
+
+.section-head h2{
+  margin:0;
+  font-size:18px;
+}
+
+.section-head span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.search{
+  position:relative;
+  margin-bottom:13px;
+}
+
+.search input{
+  width:100%;
+  padding:14px 16px 14px 44px;
+  border-radius:15px;
+  border:1px solid var(--border);
+  background:var(--card);
+  outline:none;
+  color:var(--text);
+}
+
+.search-icon{
+  position:absolute;
+  left:15px;
+  top:12px;
+  font-size:18px;
+}
+
+.friends{
+  display:grid;
+  gap:11px;
+}
+
+.friend-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:19px;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  box-shadow:var(--shadow);
+}
+
+.avatar{
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
+  border-radius:17px;
+  display:grid;
+  place-items:center;
+  background:var(--soft);
+  font-size:27px;
+}
+
+.friend-info{
+  min-width:0;
+  flex:1;
+}
+
+.friend-name{
+  font-size:16px;
+  font-weight:800;
+}
+
+.friend-relation{
+  color:var(--primary-dark);
+  font-size:11px;
+  margin-top:3px;
+  font-weight:700;
+}
+
+.friend-meta{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.friend-score{
+  text-align:right;
+}
+
+.score-number{
+  font-weight:900;
+  font-size:19px;
+  color:var(--primary-dark);
+}
+
+.score-label{
+  font-size:10px;
+  color:var(--muted);
+}
+
+.empty{
+  background:var(--card);
+  border:1px dashed var(--border);
+  border-radius:20px;
+  padding:30px 20px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.empty-icon{
+  font-size:42px;
+  margin-bottom:8px;
+}
+
+.primary-btn{
+  width:100%;
+  border:0;
+  background:var(--primary);
+  color:white;
+  border-radius:15px;
+  padding:14px 18px;
+  font-weight:800;
+  box-shadow:0 7px 17px rgba(185,111,82,.25);
+}
+
+.secondary-btn{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  border-radius:14px;
+  padding:11px 14px;
+  font-weight:700;
+}
+
+.danger-btn{
+  border:0;
+  background:#fbe4e4;
+  color:#b64444;
+  border-radius:13px;
+  padding:10px 13px;
+  font-weight:700;
+}
+
+.small-btn{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  border-radius:11px;
+  padding:7px 10px;
+  font-size:12px;
+}
+
+.bottom-nav{
+  position:fixed;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  z-index:30;
+  width:min(520px,calc(100% - 24px));
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  background:rgba(255,255,255,.94);
+  border:1px solid var(--border);
+  border-radius:21px;
+  box-shadow:0 10px 35px rgba(50,30,20,.16);
+  padding:6px;
+  backdrop-filter:blur(15px);
+}
+
+.nav-btn{
+  border:0;
+  background:transparent;
+  border-radius:16px;
+  padding:9px 4px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+}
+
+.nav-btn.active{
+  background:var(--soft);
+  color:var(--primary-dark);
+}
+
+.nav-icon{
+  display:block;
+  font-size:20px;
+  margin-bottom:2px;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(25,17,13,.5);
+  padding:15px;
+  align-items:flex-end;
+  justify-content:center;
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+  width:min(620px,100%);
+  max-height:92vh;
+  overflow-y:auto;
+  background:var(--bg);
+  border-radius:27px 27px 18px 18px;
+  padding:20px;
+  box-shadow:0 -5px 40px rgba(0,0,0,.2);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:17px;
+}
+
+.modal-head h2{
+  margin:0;
+  font-size:21px;
+}
+
+.close-btn{
+  border:0;
+  background:var(--card);
+  color:var(--text);
+  border-radius:12px;
+  width:38px;
+  height:38px;
+  font-size:19px;
+}
+
+.field{margin-bottom:14px}
+
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:800;
+  margin:0 0 7px 3px;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  border-radius:14px;
+  padding:13px;
+  outline:none;
+}
+
+.field textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.emoji-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.emoji-option{
+  width:45px;
+  height:45px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--card);
+  font-size:22px;
+}
+
+.emoji-option.selected{
+  background:var(--soft);
+  border-color:var(--primary);
+}
+
+.relation-row{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+
+.relation-option{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  border-radius:14px;
+  padding:12px;
+  text-align:center;
+  font-weight:700;
+}
+
+.relation-option.selected{
+  background:var(--soft);
+  border-color:var(--primary);
+  color:var(--primary-dark);
+}
+
+.anger-row{
+  display:flex;
+  gap:7px;
+}
+
+.anger-option{
+  flex:1;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  border-radius:13px;
+  padding:10px 4px;
+  font-size:12px;
+}
+
+.anger-option.selected{
+  background:var(--soft);
+  border-color:var(--primary);
+  color:var(--primary-dark);
+  font-weight:800;
+}
+
+.preview-photo{
+  width:100%;
+  max-height:220px;
+  object-fit:cover;
+  border-radius:15px;
+  margin-top:8px;
+  display:none;
+}
+
+.event-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:11px;
+  box-shadow:var(--shadow);
+}
+
+.event-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.event-person{font-weight:850}
+
+.event-date{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+.event-category{
+  background:var(--soft);
+  color:var(--primary-dark);
+  padding:6px 9px;
+  border-radius:10px;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.event-title{
+  font-size:16px;
+  font-weight:800;
+  margin:13px 0 6px;
+}
+
+.event-detail{
+  color:#62554e;
+  font-size:13px;
+  line-height:1.6;
+  white-space:pre-wrap;
+}
+
+.event-bottom{
+  margin-top:13px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.stars{letter-spacing:1px}
+
+.event-actions{
+  display:flex;
+  gap:6px;
+}
+
+.event-photo{
+  width:100%;
+  max-height:230px;
+  object-fit:cover;
+  border-radius:14px;
+  margin-top:12px;
+}
+
+.friend-detail-head{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:17px;
+  box-shadow:var(--shadow);
+}
+
+.friend-detail-head .avatar{
+  width:65px;
+  height:65px;
+  flex-basis:65px;
+  font-size:34px;
+}
+
+.detail-name{
+  font-size:21px;
+  font-weight:900;
+}
+
+.detail-relation{
+  color:var(--primary-dark);
+  font-weight:800;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.detail-stats{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+
+.warning-levels{
+  display:grid;
+  gap:10px;
+}
+
+.warning-level{
+  width:100%;
+  text-align:left;
+  padding:15px;
+  border-radius:17px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+}
+
+.warning-level strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.warning-level span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.warning-level.yellow{border-left:5px solid #e7c34b}
+.warning-level.orange{border-left:5px solid #e89a3d}
+.warning-level.red{border-left:5px solid #d95c5c}
+.warning-level.black{border-left:5px solid #444}
+
+.warning-level.selected{
+  box-shadow:0 0 0 2px var(--primary);
+  background:var(--soft);
+}
+
+.warning-paper{
+  background:#fffdf6;
+  color:#29231f;
+  padding:24px 20px;
+  border:2px solid #e1d7c4;
+  box-shadow:0 8px 20px rgba(60,40,20,.1);
+  position:relative;
+  overflow:hidden;
+}
+
+.warning-paper:before{
+  content:"";
+  position:absolute;
+  inset:9px;
+  border:1px dashed #c9bda8;
+  pointer-events:none;
+}
+
+.paper-inner{
+  position:relative;
+  z-index:1;
+}
+
+.paper-school{
+  text-align:center;
+  font-size:11px;
+  letter-spacing:2px;
+  color:#766b5e;
+}
+
+.paper-title{
+  text-align:center;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:25px;
+  font-weight:900;
+  margin:9px 0 3px;
+}
+
+.paper-subtitle{
+  text-align:center;
+  font-size:12px;
+  color:#71685e;
+  margin-bottom:19px;
+}
+
+.paper-section{margin:16px 0}
+
+.paper-section-title{
+  font-weight:900;
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+.paper-text{
+  font-size:13px;
+  line-height:1.75;
+}
+
+.paper-warning{
+  margin:15px 0;
+  padding:11px;
+  border:1px solid #d6c7b0;
+  background:#faf3e5;
+  font-size:12px;
+  line-height:1.6;
+}
+
+.paper-check{
+  margin:5px 0;
+  font-size:12px;
+}
+
+.paper-sign{
+  margin-top:22px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  font-size:11px;
+}
+
+.paper-line{
+  border-bottom:1px solid #999;
+  display:inline-block;
+  min-width:85px;
+  height:18px;
+}
+
+.paper-footer{
+  text-align:center;
+  margin-top:20px;
+  color:#857a6d;
+  font-size:10px;
+}
+
+.warning-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
+
+.settings-list{
+  display:grid;
+  gap:10px;
+}
+
+.settings-item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.toggle{
+  width:48px;
+  height:28px;
+  border:0;
+  border-radius:20px;
+  background:#d8ccc5;
+  position:relative;
+}
+
+.toggle:after{
+  content:"";
+  position:absolute;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:white;
+  top:3px;
+  left:3px;
+  transition:.2s;
+}
+
+.toggle.on{background:var(--primary)}
+
+.toggle.on:after{left:23px}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:92px;
+  transform:translateX(-50%) translateY(20px);
+  background:#332924;
+  color:white;
+  padding:11px 15px;
+  border-radius:13px;
+  font-size:12px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  z-index:200;
+  max-width:calc(100% - 40px);
+  text-align:center;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+body.dark{
+  --bg:#211b18;
+  --card:#2c2521;
+  --text:#f6eee7;
+  --muted:#b8aaa1;
+  --primary:#d38a69;
+  --primary-dark:#edb093;
+  --soft:#49332a;
+  --border:#493d36;
+  --shadow:0 8px 25px rgba(0,0,0,.2);
+}
+
+body.dark .topbar{
+  background:rgba(33,27,24,.94);
+}
+
+body.dark .hero{
+  background:linear-gradient(135deg,#463229,#2b2420);
+  border-color:#56453b;
+}
+
+body.dark .event-detail{
+  color:#d0c4bc;
+}
+
+body.dark .bottom-nav{
+  background:rgba(44,37,33,.95);
+}
+
+@media(min-width:700px){
+  .modal{align-items:center}
+  .modal-box{border-radius:27px}
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-icon">📕</div>
-      <div>
-        <div class="brand-title">小氣簿</div>
-        <div class="brand-sub">有啲嘢唔係我小氣，我只係有記錄。</div>
-      </div>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">📕</div>
+    <div>
+      <div class="brand-title">小氣簿</div>
+      <div class="brand-sub">有啲嘢唔係我小氣，我只係有記錄。</div>
     </div>
+  </div>
 
-    <button class="icon-btn" onclick="toggleDarkMode()" id="themeBtn">🌙</button>
-  </header>
+  <button class="icon-btn" id="themeBtn" onclick="toggleDarkMode()">🌙</button>
+</header>
 
-  <main id="appMain"></main>
+<main id="appMain"></main>
 
-  <nav class="bottom-nav">
-    <button class="nav-btn active" id="navHome" onclick="showPage('home')">
-      <span class="nav-icon">🏠</span>
-      首頁
-    </button>
+<nav class="bottom-nav">
 
-    <button class="nav-btn" id="navEvents" onclick="showPage('events')">
-      <span class="nav-icon">📜</span>
-      罪證
-    </button>
+  <button class="nav-btn active" id="navHome" onclick="showPage('home')">
+    <span class="nav-icon">🏠</span>
+    首頁
+  </button>
 
-    <button class="nav-btn" id="navSettings" onclick="showPage('settings')">
-      <span class="nav-icon">⚙️</span>
-      設定
-    </button>
-  </nav>
+  <button class="nav-btn" id="navEvents" onclick="showPage('events')">
+    <span class="nav-icon">📜</span>
+    罪證
+  </button>
+
+  <button class="nav-btn" id="navSettings" onclick="showPage('settings')">
+    <span class="nav-icon">⚙️</span>
+    設定
+  </button>
+
+</nav>
+
 </div>
 
-<!-- Modal -->
 <div class="modal" id="modal">
   <div class="modal-box" id="modalBox"></div>
 </div>
@@ -909,36 +883,41 @@
 <div class="toast" id="toast"></div>
 
 <script>
-/* =========================================================
-   小氣簿 Ultimate
-   單檔版本
-   資料儲存：localStorage
-   ========================================================= */
 
-const STORAGE_KEY = "xiaoqi_book_data_v1";
-const THEME_KEY = "xiaoqi_book_theme";
+const STORAGE_KEY="xiaoqi_book_data_v2";
+const THEME_KEY="xiaoqi_book_theme";
 
-let data = {
-  friends: [],
-  events: [],
-  warnings: []
+let data={
+  friends:[],
+  events:[],
+  warnings:[]
 };
 
-let currentPage = "home";
-let selectedFriendId = null;
-let editingEventId = null;
-let editingFriendId = null;
-let selectedEmoji = "😤";
-let selectedAnger = 3;
-let selectedWarningLevel = "yellow";
-let uploadedPhoto = "";
+let currentPage="home";
+let selectedFriendId=null;
+let editingEventId=null;
+let editingFriendId=null;
+let editingWarningId=null;
 
-const emojiList = [
+let selectedEmoji="😤";
+let selectedAnger=3;
+let selectedRelation="朋友";
+let selectedWarningLevel="yellow";
+let uploadedPhoto="";
+
+const emojiList=[
   "😤","😑","🙄","🤡","🐷","🐸","🐱","🐶",
   "🦊","🐻","🐼","🐵","👻","💩","🤨","😈"
 ];
 
-const categories = [
+const relations=[
+  "朋友",
+  "好朋友",
+  "老best",
+  "伴侶"
+];
+
+const categories=[
   "放飛機",
   "遲到",
   "已讀不回",
@@ -951,355 +930,493 @@ const categories = [
   "其他"
 ];
 
-/* ---------- 初始化 ---------- */
+/* =========================
+   初始化
+========================= */
 
 loadData();
 loadTheme();
 render();
 
-/* ---------- 儲存 ---------- */
+/* =========================
+   基本工具
+========================= */
 
-function saveData() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+function uid(prefix="id"){
+  return prefix+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);
 }
 
-function loadData() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
+function saveData(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
 
-    if (saved) {
-      const parsed = JSON.parse(saved);
+function loadData(){
 
-      data = {
-        friends: Array.isArray(parsed.friends) ? parsed.friends : [],
-        events: Array.isArray(parsed.events) ? parsed.events : [],
-        warnings: Array.isArray(parsed.warnings) ? parsed.warnings : []
-      };
+  try{
+
+    let saved=localStorage.getItem(STORAGE_KEY);
+
+    /*
+      如果使用上一版資料，
+      自動嘗試讀取。
+    */
+    if(!saved){
+      const old=localStorage.getItem("xiaoqi_book_data_v1");
+      if(old) saved=old;
     }
-  } catch (e) {
+
+    if(saved){
+
+      const parsed=JSON.parse(saved);
+
+      data={
+        friends:Array.isArray(parsed.friends)?parsed.friends:[],
+        events:Array.isArray(parsed.events)?parsed.events:[],
+        warnings:Array.isArray(parsed.warnings)?parsed.warnings:[]
+      };
+
+      /*
+        舊朋友冇 relation 時自動補返
+      */
+      data.friends.forEach(f=>{
+        if(!f.relation) f.relation="朋友";
+      });
+
+      /*
+        舊警告冇 issuer 時自動補空白
+      */
+      data.warnings.forEach(w=>{
+        if(!w.issuer) w.issuer="";
+        if(!w.friendSignature) w.friendSignature="";
+        if(!w.comment) w.comment="";
+      });
+    }
+
+  }catch(e){
     console.error(e);
   }
 }
 
-function uid(prefix = "id") {
-  return prefix + "_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
-}
-
-/* ---------- 工具 ---------- */
-
-function escapeHTML(str = "") {
+function escapeHTML(str=""){
   return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 }
 
-function formatDate(date) {
-  if (!date) return "";
+function today(){
 
-  const d = new Date(date + "T00:00:00");
+  const d=new Date();
 
-  if (Number.isNaN(d.getTime())) return date;
+  return d.getFullYear()+"-"+
+    String(d.getMonth()+1).padStart(2,"0")+"-"+
+    String(d.getDate()).padStart(2,"0");
+}
 
-  return d.toLocaleDateString("zh-HK", {
-    year: "numeric",
-    month: "long",
-    day: "numeric"
+function formatDate(date){
+
+  if(!date)return "";
+
+  const d=new Date(date+"T00:00:00");
+
+  if(isNaN(d.getTime()))return date;
+
+  return d.toLocaleDateString("zh-HK",{
+    year:"numeric",
+    month:"long",
+    day:"numeric"
   });
 }
 
-function today() {
-  const d = new Date();
-
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
+function getFriend(id){
+  return data.friends.find(f=>f.id===id);
 }
 
-function getFriend(id) {
-  return data.friends.find(f => f.id === id);
-}
+function getFriendEvents(friendId){
 
-function getFriendEvents(friendId) {
   return data.events
-    .filter(e => e.friendId === friendId)
-    .sort((a,b) => b.date.localeCompare(a.date));
+  .filter(e=>e.friendId===friendId)
+  .sort((a,b)=>b.date.localeCompare(a.date));
 }
 
-function friendScore(friendId) {
+function friendScore(friendId){
+
   return data.events
-    .filter(e => e.friendId === friendId)
-    .reduce((sum, e) => sum + Number(e.anger || 0), 0);
+  .filter(e=>e.friendId===friendId)
+  .reduce((sum,e)=>sum+Number(e.anger||0),0);
 }
 
-function stars(n) {
-  const x = Number(n || 0);
-  return "★".repeat(x) + "☆".repeat(5 - x);
+function stars(n){
+
+  n=Number(n||0);
+
+  return "★".repeat(n)+"☆".repeat(5-n);
 }
 
-/* ---------- Toast ---------- */
+/* =========================
+   Toast
+========================= */
 
-function showToast(message) {
-  const el = document.getElementById("toast");
+function showToast(message){
 
-  el.textContent = message;
+  const el=document.getElementById("toast");
+
+  el.textContent=message;
   el.classList.add("show");
 
-  setTimeout(() => {
+  setTimeout(()=>{
     el.classList.remove("show");
-  }, 2200);
+  },2200);
 }
 
-/* ---------- Modal ---------- */
+/* =========================
+   Modal
+========================= */
 
-function openModal(html) {
-  document.getElementById("modalBox").innerHTML = html;
+function openModal(html){
+
+  document.getElementById("modalBox").innerHTML=html;
   document.getElementById("modal").classList.add("show");
 }
 
-function closeModal() {
+function closeModal(){
   document.getElementById("modal").classList.remove("show");
 }
 
-document.getElementById("modal").addEventListener("click", function(e) {
-  if (e.target === this) {
+document.getElementById("modal").addEventListener("click",function(e){
+
+  if(e.target===this){
     closeModal();
   }
+
 });
 
-/* ---------- Theme ---------- */
+/* =========================
+   深色模式
+========================= */
 
-function loadTheme() {
-  const theme = localStorage.getItem(THEME_KEY);
+function loadTheme(){
 
-  if (theme === "dark") {
+  if(localStorage.getItem(THEME_KEY)==="dark"){
+
     document.body.classList.add("dark");
-    document.getElementById("themeBtn").textContent = "☀️";
+
+    document.getElementById("themeBtn").textContent="☀️";
   }
 }
 
-function toggleDarkMode() {
+function toggleDarkMode(){
+
   document.body.classList.toggle("dark");
 
-  const isDark = document.body.classList.contains("dark");
+  const dark=document.body.classList.contains("dark");
 
-  localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+  localStorage.setItem(
+    THEME_KEY,
+    dark?"dark":"light"
+  );
 
-  document.getElementById("themeBtn").textContent = isDark ? "☀️" : "🌙";
+  document.getElementById("themeBtn").textContent=
+    dark?"☀️":"🌙";
 }
 
-/* ---------- 頁面 ---------- */
+/* =========================
+   Page
+========================= */
 
-function showPage(page) {
-  currentPage = page;
+function showPage(page){
 
-  document.querySelectorAll(".nav-btn").forEach(btn => {
-    btn.classList.remove("active");
-  });
+  currentPage=page;
 
-  if (page === "home") {
+  document.querySelectorAll(".nav-btn")
+  .forEach(btn=>btn.classList.remove("active"));
+
+  if(page==="home")
     document.getElementById("navHome").classList.add("active");
-  }
 
-  if (page === "events") {
+  if(page==="events")
     document.getElementById("navEvents").classList.add("active");
-  }
 
-  if (page === "settings") {
+  if(page==="settings")
     document.getElementById("navSettings").classList.add("active");
-  }
 
   render();
 }
 
-function render() {
-  const main = document.getElementById("appMain");
+function render(){
 
-  if (currentPage === "home") {
-    main.innerHTML = renderHome();
-  }
+  const main=document.getElementById("appMain");
 
-  if (currentPage === "events") {
-    main.innerHTML = renderEventsPage();
-  }
+  if(currentPage==="home")
+    main.innerHTML=renderHome();
 
-  if (currentPage === "settings") {
-    main.innerHTML = renderSettings();
-  }
+  if(currentPage==="events")
+    main.innerHTML=renderEventsPage();
+
+  if(currentPage==="settings")
+    main.innerHTML=renderSettings();
 }
 
-/* ---------- 首頁 ---------- */
+/* =========================
+   Home
+========================= */
 
-function renderHome() {
-  const totalEvents = data.events.length;
-  const totalFriends = data.friends.length;
+function renderHome(){
 
-  const totalScore = data.events.reduce(
-    (sum, e) => sum + Number(e.anger || 0),
-    0
+  const totalFriends=data.friends.length;
+  const totalEvents=data.events.length;
+
+  const totalScore=data.events.reduce(
+    (sum,e)=>sum+Number(e.anger||0),0
   );
 
-  let html = `
-    <section class="hero">
-      <h1>📕 小氣簿</h1>
+  return `
 
-      <p>
-        專門記低啲「唔係我小氣，但係真係要記低」嘅事情。
-      </p>
+  <section class="hero">
 
-      <div class="hero-quote">
-        「我唔記仇，我只係有一個非常完整嘅紀錄系統。」🙂
-      </div>
-    </section>
+    <h1>📕 小氣簿</h1>
 
-    <section class="stats">
-      <div class="stat">
-        <div class="stat-number">${totalFriends}</div>
-        <div class="stat-label">朋友</div>
-      </div>
+    <p>
+      專門記低啲「唔係我小氣，但係真係要記低」
+      嘅事情。
+    </p>
 
-      <div class="stat">
-        <div class="stat-number">${totalEvents}</div>
-        <div class="stat-label">罪證</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-number">${totalScore}</div>
-        <div class="stat-label">總小氣值</div>
-      </div>
-    </section>
-
-    <button class="primary-btn" onclick="openFriendForm()">
-      ＋ 新增朋友
-    </button>
-
-    <div class="section-head">
-      <h2>👥 我的朋友</h2>
-      <span>${totalFriends} 人</span>
+    <div class="hero-quote">
+      「我唔記仇，我只係有一個非常完整嘅紀錄系統。」🙂
     </div>
 
-    <div class="search">
-      <span class="search-icon">🔎</span>
-      <input
-        id="friendSearch"
-        placeholder="搜尋朋友..."
-        oninput="filterFriends(this.value)"
-      >
+  </section>
+
+  <section class="stats">
+
+    <div class="stat">
+      <div class="stat-number">${totalFriends}</div>
+      <div class="stat-label">朋友</div>
     </div>
 
-    <div class="friends" id="friendList">
-      ${renderFriendList(data.friends)}
+    <div class="stat">
+      <div class="stat-number">${totalEvents}</div>
+      <div class="stat-label">罪證</div>
     </div>
+
+    <div class="stat">
+      <div class="stat-number">${totalScore}</div>
+      <div class="stat-label">總小氣值</div>
+    </div>
+
+  </section>
+
+  <button class="primary-btn" onclick="openFriendForm()">
+    ＋ 新增朋友
+  </button>
+
+  <div class="section-head">
+    <h2>👥 我的朋友</h2>
+    <span>${totalFriends} 人</span>
+  </div>
+
+  <div class="search">
+
+    <span class="search-icon">🔎</span>
+
+    <input
+      placeholder="搜尋朋友..."
+      oninput="filterFriends(this.value)"
+    >
+
+  </div>
+
+  <div class="friends" id="friendList">
+    ${renderFriendList(data.friends)}
+  </div>
   `;
-
-  return html;
 }
 
-function renderFriendList(friends) {
-  if (!friends.length) {
+function renderFriendList(friends){
+
+  if(!friends.length){
+
     return `
       <div class="empty">
+
         <div class="empty-icon">👀</div>
+
         <strong>暫時冇朋友上榜</strong>
+
         <div style="margin-top:6px">
           快啲新增一個，等我哋開始記錄。😈
         </div>
+
       </div>
     `;
   }
 
-  return friends.map(friend => {
-    const events = getFriendEvents(friend.id);
-    const score = friendScore(friend.id);
+  return friends.map(friend=>{
+
+    const events=getFriendEvents(friend.id);
+    const score=friendScore(friend.id);
 
     return `
-      <div class="friend-card" onclick="openFriendDetail('${friend.id}')">
+
+      <div
+        class="friend-card"
+        onclick="openFriendDetail('${friend.id}')"
+      >
 
         <div class="avatar">
-          ${escapeHTML(friend.emoji || "😤")}
+          ${escapeHTML(friend.emoji||"😤")}
         </div>
 
         <div class="friend-info">
+
           <div class="friend-name">
             ${escapeHTML(friend.name)}
+          </div>
+
+          <div class="friend-relation">
+            ${escapeHTML(friend.relation||"朋友")}
           </div>
 
           <div class="friend-meta">
             ${events.length} 宗罪證 · ${score} 小氣值
           </div>
+
         </div>
 
         <div class="friend-score">
-          <div class="score-number">${score}</div>
-          <div class="score-label">小氣值</div>
+
+          <div class="score-number">
+            ${score}
+          </div>
+
+          <div class="score-label">
+            小氣值
+          </div>
+
         </div>
 
       </div>
     `;
+
   }).join("");
 }
 
-function filterFriends(value) {
-  const keyword = String(value || "").trim().toLowerCase();
+function filterFriends(value){
 
-  const filtered = data.friends.filter(friend => {
-    return friend.name.toLowerCase().includes(keyword);
-  });
+  const keyword=String(value||"")
+    .trim()
+    .toLowerCase();
 
-  document.getElementById("friendList").innerHTML =
+  const filtered=data.friends.filter(friend=>
+    (
+      friend.name+" "+
+      (friend.relation||"")
+    ).toLowerCase().includes(keyword)
+  );
+
+  document.getElementById("friendList").innerHTML=
     renderFriendList(filtered);
 }
 
-/* ---------- 新增／修改朋友 ---------- */
+/* =========================
+   Friend Form
+========================= */
 
-function openFriendForm(friendId = null) {
-  editingFriendId = friendId;
+function openFriendForm(friendId=null){
 
-  const friend = friendId ? getFriend(friendId) : null;
+  editingFriendId=friendId;
 
-  selectedEmoji = friend?.emoji || "😤";
+  const friend=friendId?getFriend(friendId):null;
+
+  selectedEmoji=friend?.emoji||"😤";
+  selectedRelation=friend?.relation||"朋友";
 
   openModal(`
+
     <div class="modal-head">
-      <h2>${friend ? "✏️ 修改朋友" : "👤 新增朋友"}</h2>
-      <button class="close-btn" onclick="closeModal()">×</button>
+
+      <h2>
+        ${friend?"✏️ 修改朋友":"👤 新增朋友"}
+      </h2>
+
+      <button
+        class="close-btn"
+        onclick="closeModal()"
+      >
+        ×
+      </button>
+
     </div>
 
     <div class="field">
+
       <label>朋友名稱</label>
+
       <input
         id="friendName"
-        value="${escapeHTML(friend?.name || "")}"
+        value="${escapeHTML(friend?.name||"")}"
         placeholder="例如：阿明"
       >
+
     </div>
 
     <div class="field">
-      <label>選擇代表 Emoji</label>
+
+      <label>關係</label>
+
+      <div class="relation-row">
+
+        ${relations.map(r=>`
+
+          <button
+            class="relation-option
+            ${selectedRelation===r?"selected":""}"
+            onclick="selectRelation('${r}',this)"
+          >
+            ${escapeHTML(r)}
+          </button>
+
+        `).join("")}
+
+      </div>
+
+    </div>
+
+    <div class="field">
+
+      <label>代表 Emoji</label>
 
       <div class="emoji-row">
-        ${emojiList.map(emoji => `
+
+        ${emojiList.map(emoji=>`
+
           <button
-            class="emoji-option ${selectedEmoji === emoji ? "selected" : ""}"
-            onclick="selectEmoji('${emoji}', this)"
+            class="emoji-option
+            ${selectedEmoji===emoji?"selected":""}"
+            onclick="selectEmoji('${emoji}',this)"
           >
             ${emoji}
           </button>
+
         `).join("")}
+
       </div>
+
     </div>
 
-    <button class="primary-btn" onclick="saveFriend()">
-      ${friend ? "儲存修改" : "新增朋友"}
+    <button
+      class="primary-btn"
+      onclick="saveFriend()"
+    >
+      ${friend?"儲存修改":"新增朋友"}
     </button>
 
     ${
       friend
       ? `
+
         <div style="height:8px"></div>
 
         <button
@@ -1310,42 +1427,68 @@ function openFriendForm(friendId = null) {
           🗑️ 刪除朋友及所有紀錄
         </button>
       `
-      : ""
+      :""
     }
+
   `);
 }
 
-function selectEmoji(emoji, element) {
-  selectedEmoji = emoji;
+function selectRelation(relation,element){
 
-  document.querySelectorAll(".emoji-option").forEach(btn => {
-    btn.classList.remove("selected");
-  });
+  selectedRelation=relation;
+
+  document.querySelectorAll(".relation-option")
+    .forEach(btn=>btn.classList.remove("selected"));
 
   element.classList.add("selected");
 }
 
-function saveFriend() {
-  const name = document.getElementById("friendName").value.trim();
+function selectEmoji(emoji,element){
 
-  if (!name) {
+  selectedEmoji=emoji;
+
+  document.querySelectorAll(".emoji-option")
+    .forEach(btn=>btn.classList.remove("selected"));
+
+  element.classList.add("selected");
+}
+
+function saveFriend(){
+
+  const name=document
+    .getElementById("friendName")
+    .value
+    .trim();
+
+  if(!name){
     showToast("請先輸入朋友名稱 😗");
     return;
   }
 
-  if (editingFriendId) {
-    const friend = getFriend(editingFriendId);
+  if(editingFriendId){
 
-    friend.name = name;
-    friend.emoji = selectedEmoji;
+    const friend=getFriend(editingFriendId);
+
+    friend.name=name;
+    friend.emoji=selectedEmoji;
+    friend.relation=selectedRelation;
 
     showToast("朋友資料已修改 ✏️");
-  } else {
+
+  }else{
+
     data.friends.push({
-      id: uid("friend"),
-      name,
-      emoji: selectedEmoji,
-      createdAt: new Date().toISOString()
+
+      id:uid("friend"),
+
+      name:name,
+
+      emoji:selectedEmoji,
+
+      relation:selectedRelation,
+
+      createdAt:new Date().toISOString()
+
     });
 
     showToast("成功新增朋友 👤");
@@ -1356,61 +1499,77 @@ function saveFriend() {
   render();
 }
 
-function deleteFriend(id) {
-  const friend = getFriend(id);
+function deleteFriend(id){
 
-  if (!friend) return;
+  const friend=getFriend(id);
 
-  const ok = confirm(
-    `確定要刪除「${friend.name}」？\n\n佢所有罪證亦會一齊刪除。`
-  );
+  if(!friend)return;
 
-  if (!ok) return;
+  if(!confirm(
+    `確定要刪除「${friend.name}」？\n\n所有罪證及警告信都會一齊刪除。`
+  ))return;
 
-  data.friends = data.friends.filter(f => f.id !== id);
-  data.events = data.events.filter(e => e.friendId !== id);
-  data.warnings = data.warnings.filter(w => w.friendId !== id);
+  data.friends=data.friends.filter(f=>f.id!==id);
+  data.events=data.events.filter(e=>e.friendId!==id);
+  data.warnings=data.warnings.filter(w=>w.friendId!==id);
 
   saveData();
   closeModal();
-
-  selectedFriendId = null;
   render();
 
   showToast("已刪除朋友及相關紀錄");
 }
 
-/* ---------- 朋友詳情 ---------- */
+/* =========================
+   Friend Detail
+========================= */
 
-function openFriendDetail(id) {
-  selectedFriendId = id;
+function openFriendDetail(id){
 
-  const friend = getFriend(id);
+  selectedFriendId=id;
 
-  if (!friend) return;
+  const friend=getFriend(id);
 
-  const events = getFriendEvents(id);
-  const score = friendScore(id);
+  if(!friend)return;
 
-  const warnings = data.warnings
-    .filter(w => w.friendId === id)
-    .sort((a,b) => b.createdAt.localeCompare(a.createdAt));
+  const events=getFriendEvents(id);
+  const score=friendScore(id);
+
+  const warnings=data.warnings
+    .filter(w=>w.friendId===id)
+    .sort((a,b)=>
+      (b.date||"").localeCompare(a.date||"")
+    );
 
   openModal(`
+
     <div class="modal-head">
+
       <h2>朋友資料</h2>
-      <button class="close-btn" onclick="closeModal()">×</button>
+
+      <button
+        class="close-btn"
+        onclick="closeModal()"
+      >
+        ×
+      </button>
+
     </div>
 
     <div class="friend-detail-head">
 
       <div class="avatar">
-        ${escapeHTML(friend.emoji || "😤")}
+        ${escapeHTML(friend.emoji||"😤")}
       </div>
 
       <div style="flex:1">
+
         <div class="detail-name">
           ${escapeHTML(friend.name)}
+        </div>
+
+        <div class="detail-relation">
+          ${escapeHTML(friend.relation||"朋友")}
         </div>
 
         <div class="detail-stats">
@@ -1418,6 +1577,7 @@ function openFriendDetail(id) {
           <span>🚨 ${warnings.length} 次警告</span>
           <span>🔥 ${score} 分</span>
         </div>
+
       </div>
 
       <button
@@ -1455,8 +1615,8 @@ function openFriendDetail(id) {
 
     ${
       events.length
-      ? events.map(event => renderEventCard(event)).join("")
-      : `
+      ?events.map(e=>renderEventCard(e)).join("")
+      :`
         <div class="empty">
           <div class="empty-icon">😇</div>
           暫時未有罪證。
@@ -1468,57 +1628,131 @@ function openFriendDetail(id) {
 
     ${
       warnings.length
-      ? `
+      ?`
+
         <div class="section-head">
           <h2>🚨 警告紀錄</h2>
           <span>${warnings.length} 次</span>
         </div>
 
-        ${warnings.map(w => `
-          <div class="event-card">
-            <div class="event-top">
-              <div>
-                <div class="event-person">
-                  ${warningEmoji(w.level)}
-                  ${warningTitle(w.level)}
-                </div>
+        ${warnings.map(w=>renderWarningRecord(w)).join("")}
 
-                <div class="event-date">
-                  ${formatDate(w.date)}
-                </div>
-              </div>
-
-              <span class="event-category">
-                警告
-              </span>
-            </div>
-          </div>
-        `).join("")}
       `
-      : ""
+      :""
     }
+
   `);
 }
 
-/* ---------- 事件 ---------- */
+function renderWarningRecord(w){
 
-function openEventForm(friendId, eventId = null) {
-  selectedFriendId = friendId;
-  editingEventId = eventId;
+  const friend=getFriend(w.friendId);
 
-  const event = eventId
-    ? data.events.find(e => e.id === eventId)
-    : null;
+  return `
 
-  selectedAnger = Number(event?.anger || 3);
-  uploadedPhoto = event?.photo || "";
+    <div class="event-card">
 
-  const friend = getFriend(friendId);
+      <div class="event-top">
+
+        <div>
+
+          <div class="event-person">
+            ${warningEmoji(w.level)}
+            ${warningTitle(w.level)}
+          </div>
+
+          <div class="event-date">
+            ${formatDate(w.date)}
+          </div>
+
+        </div>
+
+        <span class="event-category">
+          警告
+        </span>
+
+      </div>
+
+      <div class="event-title">
+        ${escapeHTML(w.reason)}
+      </div>
+
+      ${
+        w.issuer
+        ?`
+          <div class="event-detail">
+            發出人：${escapeHTML(w.issuer)}
+          </div>
+        `
+        :""
+      }
+
+      <div style="
+        margin-top:12px;
+        display:flex;
+        gap:6px;
+      ">
+
+        <button
+          class="small-btn"
+          onclick="showWarningById('${w.id}')"
+        >
+          👀 查看
+        </button>
+
+        <button
+          class="small-btn"
+          onclick="openWarningForm('${w.friendId}','${w.id}')"
+        >
+          ✏️ 修改
+        </button>
+
+        <button
+          class="danger-btn"
+          onclick="deleteWarning('${w.id}')"
+        >
+          🗑️ 刪除
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+/* =========================
+   Event Form
+========================= */
+
+function openEventForm(friendId,eventId=null){
+
+  selectedFriendId=friendId;
+  editingEventId=eventId;
+
+  const event=eventId
+    ?data.events.find(e=>e.id===eventId)
+    :null;
+
+  selectedAnger=Number(event?.anger||3);
+  uploadedPhoto=event?.photo||"";
+
+  const friend=getFriend(friendId);
 
   openModal(`
+
     <div class="modal-head">
-      <h2>${event ? "✏️ 修改罪證" : "😤 記佢一筆"}</h2>
-      <button class="close-btn" onclick="closeModal()">×</button>
+
+      <h2>
+        ${event?"✏️ 修改罪證":"😤 記佢一筆"}
+      </h2>
+
+      <button
+        class="close-btn"
+        onclick="closeModal()"
+      >
+        ×
+      </button>
+
     </div>
 
     <div style="
@@ -1528,71 +1762,91 @@ function openEventForm(friendId, eventId = null) {
       margin-bottom:15px;
       font-weight:800;
     ">
-      ${escapeHTML(friend?.emoji || "😤")}
-      ${escapeHTML(friend?.name || "")}
+      ${escapeHTML(friend?.emoji||"😤")}
+      ${escapeHTML(friend?.name||"")}
     </div>
 
     <div class="field">
+
       <label>日期</label>
+
       <input
         id="eventDate"
         type="date"
-        value="${event?.date || today()}"
+        value="${event?.date||today()}"
       >
+
     </div>
 
     <div class="field">
+
       <label>罪行分類</label>
 
       <select id="eventCategory">
-        ${categories.map(c => `
+
+        ${categories.map(c=>`
+
           <option
             value="${escapeHTML(c)}"
-            ${event?.category === c ? "selected" : ""}
+            ${event?.category===c?"selected":""}
           >
             ${escapeHTML(c)}
           </option>
+
         `).join("")}
+
       </select>
+
     </div>
 
     <div class="field">
+
       <label>事情標題</label>
 
       <input
         id="eventTitle"
-        value="${escapeHTML(event?.title || "")}"
+        value="${escapeHTML(event?.title||"")}"
         placeholder="例如：又放我飛機"
       >
+
     </div>
 
     <div class="field">
+
       <label>事情詳情</label>
 
       <textarea
         id="eventDetail"
         placeholder="詳細記低發生咩事……"
-      >${escapeHTML(event?.detail || "")}</textarea>
+      >${escapeHTML(event?.detail||"")}</textarea>
+
     </div>
 
     <div class="field">
+
       <label>激氣程度</label>
 
       <div class="anger-row">
-        ${[1,2,3,4,5].map(n => `
+
+        ${[1,2,3,4,5].map(n=>`
+
           <button
-            class="anger-option ${selectedAnger === n ? "selected" : ""}"
-            onclick="selectAnger(${n}, this)"
+            class="anger-option
+            ${selectedAnger===n?"selected":""}"
+            onclick="selectAnger(${n},this)"
           >
             ${"😤".repeat(n)}
-            <br>
-            ${n}
+            <br>${n}
           </button>
+
         `).join("")}
+
       </div>
+
     </div>
 
     <div class="field">
+
       <label>📸 加相片／罪證 Screenshot</label>
 
       <input
@@ -1604,7 +1858,7 @@ function openEventForm(friendId, eventId = null) {
 
       ${
         uploadedPhoto
-        ? `
+        ?`
           <img
             id="photoPreview"
             class="preview-photo"
@@ -1612,90 +1866,101 @@ function openEventForm(friendId, eventId = null) {
             style="display:block"
           >
         `
-        : `
+        :`
           <img
             id="photoPreview"
             class="preview-photo"
           >
         `
       }
+
     </div>
 
-    <button class="primary-btn" onclick="saveEvent()">
-      ${event ? "儲存修改" : "記低呢宗罪證"}
+    <button
+      class="primary-btn"
+      onclick="saveEvent()"
+    >
+      ${event?"儲存修改":"記低呢宗罪證"}
     </button>
+
   `);
 }
 
-function selectAnger(n, element) {
-  selectedAnger = n;
+function selectAnger(n,element){
 
-  document.querySelectorAll(".anger-option").forEach(btn => {
-    btn.classList.remove("selected");
-  });
+  selectedAnger=n;
+
+  document.querySelectorAll(".anger-option")
+    .forEach(btn=>btn.classList.remove("selected"));
 
   element.classList.add("selected");
 }
 
-function handlePhoto(input) {
-  const file = input.files?.[0];
+function handlePhoto(input){
 
-  if (!file) return;
+  const file=input.files?.[0];
 
-  const reader = new FileReader();
+  if(!file)return;
 
-  reader.onload = function(e) {
-    uploadedPhoto = e.target.result;
+  const reader=new FileReader();
 
-    const preview = document.getElementById("photoPreview");
+  reader.onload=e=>{
 
-    preview.src = uploadedPhoto;
-    preview.style.display = "block";
+    uploadedPhoto=e.target.result;
+
+    const preview=document.getElementById("photoPreview");
+
+    preview.src=uploadedPhoto;
+    preview.style.display="block";
   };
 
   reader.readAsDataURL(file);
 }
 
-function saveEvent() {
-  const date = document.getElementById("eventDate").value;
-  const category = document.getElementById("eventCategory").value;
-  const title = document.getElementById("eventTitle").value.trim();
-  const detail = document.getElementById("eventDetail").value.trim();
+function saveEvent(){
 
-  if (!date) {
+  const date=document.getElementById("eventDate").value;
+  const category=document.getElementById("eventCategory").value;
+  const title=document.getElementById("eventTitle").value.trim();
+  const detail=document.getElementById("eventDetail").value.trim();
+
+  if(!date){
     showToast("請選擇日期");
     return;
   }
 
-  if (!title) {
+  if(!title){
     showToast("請輸入事情標題 😤");
     return;
   }
 
-  if (editingEventId) {
-    const event = data.events.find(e => e.id === editingEventId);
+  if(editingEventId){
 
-    if (!event) return;
+    const event=data.events.find(e=>e.id===editingEventId);
 
-    event.date = date;
-    event.category = category;
-    event.title = title;
-    event.detail = detail;
-    event.anger = selectedAnger;
-    event.photo = uploadedPhoto;
+    event.date=date;
+    event.category=category;
+    event.title=title;
+    event.detail=detail;
+    event.anger=selectedAnger;
+    event.photo=uploadedPhoto;
 
     showToast("罪證已更新 ✏️");
-  } else {
+
+  }else{
+
     data.events.push({
-      id: uid("event"),
-      friendId: selectedFriendId,
+
+      id:uid("event"),
+      friendId:selectedFriendId,
       date,
       category,
       title,
       detail,
-      anger: selectedAnger,
-      photo: uploadedPhoto,
-      createdAt: new Date().toISOString()
+      anger:selectedAnger,
+      photo:uploadedPhoto,
+      createdAt:new Date().toISOString()
+
     });
 
     showToast("罪證已成功記錄 📜");
@@ -1704,30 +1969,33 @@ function saveEvent() {
   saveData();
   closeModal();
 
-  if (selectedFriendId) {
+  if(selectedFriendId)
     openFriendDetail(selectedFriendId);
-  } else {
+  else
     render();
-  }
 }
 
-function renderEventCard(event) {
-  const friend = getFriend(event.friendId);
+function renderEventCard(event){
+
+  const friend=getFriend(event.friendId);
 
   return `
+
     <div class="event-card">
 
       <div class="event-top">
 
         <div>
+
           <div class="event-person">
-            ${escapeHTML(friend?.emoji || "😤")}
-            ${escapeHTML(friend?.name || "未知朋友")}
+            ${escapeHTML(friend?.emoji||"😤")}
+            ${escapeHTML(friend?.name||"未知朋友")}
           </div>
 
           <div class="event-date">
             ${formatDate(event.date)}
           </div>
+
         </div>
 
         <span class="event-category">
@@ -1742,24 +2010,23 @@ function renderEventCard(event) {
 
       ${
         event.detail
-        ? `
+        ?`
           <div class="event-detail">
             ${escapeHTML(event.detail)}
           </div>
         `
-        : ""
+        :""
       }
 
       ${
         event.photo
-        ? `
+        ?`
           <img
             class="event-photo"
             src="${event.photo}"
-            alt="罪證相片"
           >
         `
-        : ""
+        :""
       }
 
       <div class="event-bottom">
@@ -1785,119 +2052,151 @@ function renderEventCard(event) {
           </button>
 
         </div>
+
       </div>
 
     </div>
   `;
 }
 
-function deleteEvent(id) {
-  const event = data.events.find(e => e.id === id);
+function deleteEvent(id){
 
-  if (!event) return;
+  if(!confirm("確定要刪除呢宗罪證？"))
+    return;
 
-  if (!confirm("確定要刪除呢宗罪證？")) return;
-
-  data.events = data.events.filter(e => e.id !== id);
+  data.events=data.events.filter(e=>e.id!==id);
 
   saveData();
 
-  if (selectedFriendId) {
+  if(selectedFriendId)
     openFriendDetail(selectedFriendId);
-  } else {
+  else
     render();
-  }
 
   showToast("罪證已刪除");
 }
 
-/* ---------- 所有罪證頁 ---------- */
+/* =========================
+   所有罪證
+========================= */
 
-function renderEventsPage() {
-  const events = [...data.events].sort(
-    (a,b) => b.date.localeCompare(a.date)
-  );
+function renderEventsPage(){
+
+  const events=[...data.events]
+    .sort((a,b)=>b.date.localeCompare(a.date));
 
   return `
+
     <div class="section-head" style="margin-top:5px">
       <h2>📜 所有罪證</h2>
       <span>${events.length} 宗</span>
     </div>
 
     <div class="search">
+
       <span class="search-icon">🔎</span>
 
       <input
-        id="eventSearch"
         placeholder="搜尋朋友、事件、分類..."
         oninput="filterEvents(this.value)"
       >
+
     </div>
 
     <div id="eventList">
+
       ${
         events.length
-        ? events.map(e => renderEventCard(e)).join("")
-        : `
+        ?events.map(e=>renderEventCard(e)).join("")
+        :`
           <div class="empty">
+
             <div class="empty-icon">😇</div>
+
             <strong>暫時冇罪證</strong>
+
             <div style="margin-top:6px">
               大家今日都好乖。應該。
             </div>
+
           </div>
         `
       }
+
     </div>
   `;
 }
 
-function filterEvents(value) {
-  const keyword = String(value || "").toLowerCase().trim();
+function filterEvents(value){
 
-  const events = data.events
-    .filter(event => {
-      const friend = getFriend(event.friendId);
+  const keyword=String(value||"")
+    .toLowerCase()
+    .trim();
 
-      const text = [
-        friend?.name || "",
-        event.title || "",
-        event.detail || "",
-        event.category || ""
+  const events=data.events
+    .filter(event=>{
+
+      const friend=getFriend(event.friendId);
+
+      const text=[
+        friend?.name||"",
+        friend?.relation||"",
+        event.title||"",
+        event.detail||"",
+        event.category||""
       ].join(" ").toLowerCase();
 
       return text.includes(keyword);
-    })
-    .sort((a,b) => b.date.localeCompare(a.date));
 
-  document.getElementById("eventList").innerHTML =
+    })
+    .sort((a,b)=>b.date.localeCompare(a.date));
+
+  document.getElementById("eventList").innerHTML=
+
     events.length
-      ? events.map(e => renderEventCard(e)).join("")
-      : `
-        <div class="empty">
-          🔎
-          <div style="margin-top:8px">
-            搵唔到相關罪證。
-          </div>
+    ?events.map(e=>renderEventCard(e)).join("")
+    :`
+      <div class="empty">
+        🔎
+        <div style="margin-top:8px">
+          搵唔到相關罪證。
         </div>
-      `;
+      </div>
+    `;
 }
 
-/* ---------- 警告信 ---------- */
+/* =========================
+   Warning Form
+========================= */
 
-function openWarningForm(friendId) {
-  selectedFriendId = friendId;
-  selectedWarningLevel = "yellow";
+function openWarningForm(friendId,warningId=null){
 
-  const friend = getFriend(friendId);
-  const events = getFriendEvents(friendId);
+  selectedFriendId=friendId;
+  editingWarningId=warningId;
 
-  const recent = events[0];
+  const friend=getFriend(friendId);
+
+  const warning=warningId
+    ?data.warnings.find(w=>w.id===warningId)
+    :null;
+
+  selectedWarningLevel=warning?.level||"yellow";
 
   openModal(`
+
     <div class="modal-head">
-      <h2>🚨 發出警告信</h2>
-      <button class="close-btn" onclick="closeModal()">×</button>
+
+      <h2>
+        ${warning?"✏️ 修改警告信":"🚨 發出警告信"}
+      </h2>
+
+      <button
+        class="close-btn"
+        onclick="closeModal()"
+      >
+        ×
+      </button>
+
     </div>
 
     <div style="
@@ -1907,156 +2206,325 @@ function openWarningForm(friendId) {
       margin-bottom:15px;
       font-weight:800;
     ">
-      ${escapeHTML(friend?.emoji || "😤")}
-      ${escapeHTML(friend?.name || "")}
+      ${escapeHTML(friend?.emoji||"😤")}
+      ${escapeHTML(friend?.name||"")}
+      · ${escapeHTML(friend?.relation||"朋友")}
     </div>
 
     <div class="field">
+
       <label>警告級別</label>
 
       <div class="warning-levels">
 
-        <button
-          class="warning-level yellow"
-          onclick="chooseWarning('yellow')"
-        >
-          <strong>🟡 口頭警告</strong>
-          <span>「今次先提你，下次唔好再犯。」</span>
-        </button>
+        ${warningLevelButton(
+          "yellow",
+          "🟡",
+          "口頭警告",
+          "今次先提你，下次唔好再犯。"
+        )}
 
-        <button
-          class="warning-level orange"
-          onclick="chooseWarning('orange')"
-        >
-          <strong>🟠 書面警告</strong>
-          <span>正式記錄，已經唔可以當冇事。</span>
-        </button>
+        ${warningLevelButton(
+          "orange",
+          "🟠",
+          "書面警告",
+          "正式記錄，已經唔可以當冇事。"
+        )}
 
-        <button
-          class="warning-level red"
-          onclick="chooseWarning('red')"
-        >
-          <strong>🔴 嚴重警告</strong>
-          <span>情況嚴重，需要立即改善行為。</span>
-        </button>
+        ${warningLevelButton(
+          "red",
+          "🔴",
+          "嚴重警告",
+          "情況嚴重，需要立即改善行為。"
+        )}
 
-        <button
-          class="warning-level black"
-          onclick="chooseWarning('black')"
-        >
-          <strong>💀 最後通牒</strong>
-          <span>再犯就……自己諗後果啦。</span>
-        </button>
+        ${warningLevelButton(
+          "black",
+          "💀",
+          "最後通牒",
+          "再犯就……自己諗後果啦。"
+        )}
 
       </div>
+
     </div>
 
     <div class="field">
-      <label>事件日期</label>
+
+      <label>📅 警告日期</label>
+
       <input
         id="warningDate"
         type="date"
-        value="${recent?.date || today()}"
+        value="${warning?.date||today()}"
       >
+
     </div>
 
     <div class="field">
-      <label>警告原因</label>
+
+      <label>👤 發出警告人</label>
+
+      <input
+        id="warningIssuer"
+        value="${escapeHTML(warning?.issuer||"")}"
+        placeholder="例如：Hei Wah"
+      >
+
+      <div style="
+        color:var(--muted);
+        font-size:10px;
+        margin-top:5px;
+      ">
+        呢個名字會顯示喺回條上面，等對方知道邊個發出。
+      </div>
+
+    </div>
+
+    <div class="field">
+
+      <label>⚠️ 警告原因</label>
+
       <input
         id="warningReason"
-        value="${escapeHTML(recent?.title || "")}"
+        value="${escapeHTML(warning?.reason||"")}"
         placeholder="例如：又放我飛機"
       >
+
     </div>
 
     <div class="field">
-      <label>老師評語</label>
+
+      <label>✍️ 本人評語</label>
+
       <textarea
         id="warningComment"
-        placeholder="寫低你想對佢講嘅嘢……"
-      >希望下次可以改善，唔好再令老師失望。🙂</textarea>
+        placeholder="寫低你對今次事件嘅評語……"
+      >${escapeHTML(
+        warning?.comment||
+        "希望下次可以改善，唔好再令本人失望。🙂"
+      )}</textarea>
+
     </div>
 
-    <button class="primary-btn" onclick="createWarning()">
-      📝 生成警告回條
+    <div class="field">
+
+      <label>✍️ 朋友回條簽名</label>
+
+      <input
+        id="friendSignature"
+        value="${escapeHTML(warning?.friendSignature||"")}"
+        placeholder="朋友可以喺回條上簽名"
+      >
+
+    </div>
+
+    <button
+      class="primary-btn"
+      onclick="saveWarning()"
+    >
+      ${warning?"儲存警告信修改":"生成警告回條"}
     </button>
+
+    ${
+      warning
+      ?`
+        <div style="height:8px"></div>
+
+        <button
+          class="danger-btn"
+          style="width:100%"
+          onclick="deleteWarning('${warning.id}')"
+        >
+          🗑️ 刪除呢張警告信
+        </button>
+      `
+      :""
+    }
+
   `);
 }
 
-function chooseWarning(level) {
-  selectedWarningLevel = level;
+function warningLevelButton(
+  level,
+  emoji,
+  title,
+  description
+){
 
-  showToast(
-    "已選擇：" + warningTitle(level)
-  );
+  return `
+
+    <button
+      class="warning-level ${level}
+      ${selectedWarningLevel===level?"selected":""}"
+      onclick="chooseWarning('${level}')"
+    >
+
+      <strong>
+        ${emoji} ${title}
+      </strong>
+
+      <span>
+        ${description}
+      </span>
+
+    </button>
+  `;
 }
 
-function warningTitle(level) {
-  const map = {
-    yellow: "口頭警告",
-    orange: "書面警告",
-    red: "嚴重警告",
-    black: "最後通牒"
-  };
+function chooseWarning(level){
 
-  return map[level] || "警告";
+  selectedWarningLevel=level;
+
+  document.querySelectorAll(".warning-level")
+    .forEach(btn=>btn.classList.remove("selected"));
+
+  const buttons=document.querySelectorAll(".warning-level");
+
+  buttons.forEach(btn=>{
+
+    if(btn.classList.contains(level))
+      btn.classList.add("selected");
+
+  });
 }
 
-function warningEmoji(level) {
-  const map = {
-    yellow: "🟡",
-    orange: "🟠",
-    red: "🔴",
-    black: "💀"
-  };
+function saveWarning(){
 
-  return map[level] || "⚠️";
-}
+  const date=document
+    .getElementById("warningDate")
+    .value;
 
-function createWarning() {
-  const friend = getFriend(selectedFriendId);
+  const issuer=document
+    .getElementById("warningIssuer")
+    .value.trim();
 
-  if (!friend) return;
+  const reason=document
+    .getElementById("warningReason")
+    .value.trim();
 
-  const date = document.getElementById("warningDate").value;
-  const reason = document.getElementById("warningReason").value.trim();
-  const comment = document.getElementById("warningComment").value.trim();
+  const comment=document
+    .getElementById("warningComment")
+    .value.trim();
 
-  if (!reason) {
+  const friendSignature=document
+    .getElementById("friendSignature")
+    .value.trim();
+
+  if(!date){
+    showToast("請揀警告日期 📅");
+    return;
+  }
+
+  if(!issuer){
+    showToast("請輸入發出警告人姓名 👤");
+    return;
+  }
+
+  if(!reason){
     showToast("請輸入警告原因");
     return;
   }
 
-  const warning = {
-    id: uid("warning"),
-    friendId: selectedFriendId,
-    level: selectedWarningLevel,
-    date,
-    reason,
-    comment,
-    createdAt: new Date().toISOString()
-  };
+  if(editingWarningId){
 
-  data.warnings.push(warning);
+    const warning=data.warnings
+      .find(w=>w.id===editingWarningId);
 
-  saveData();
-  closeModal();
+    if(!warning)return;
 
-  showWarning(warning);
+    warning.level=selectedWarningLevel;
+    warning.date=date;
+    warning.issuer=issuer;
+    warning.reason=reason;
+    warning.comment=comment;
+    warning.friendSignature=friendSignature;
 
-  showToast("警告信已生成 🚨");
+    saveData();
+    closeModal();
+
+    showWarning(warning);
+
+    showToast("警告信已修改 ✏️");
+
+  }else{
+
+    const warning={
+      id:uid("warning"),
+      friendId:selectedFriendId,
+      level:selectedWarningLevel,
+      date,
+      issuer,
+      reason,
+      comment,
+      friendSignature,
+      createdAt:new Date().toISOString()
+    };
+
+    data.warnings.push(warning);
+
+    saveData();
+    closeModal();
+
+    showWarning(warning);
+
+    showToast("警告信已生成 🚨");
+  }
 }
 
-function showWarning(warning) {
-  const friend = getFriend(warning.friendId);
+/* =========================
+   Warning Display
+========================= */
+
+function warningTitle(level){
+
+  const map={
+    yellow:"口頭警告",
+    orange:"書面警告",
+    red:"嚴重警告",
+    black:"最後通牒"
+  };
+
+  return map[level]||"警告";
+}
+
+function warningEmoji(level){
+
+  const map={
+    yellow:"🟡",
+    orange:"🟠",
+    red:"🔴",
+    black:"💀"
+  };
+
+  return map[level]||"⚠️";
+}
+
+function showWarningById(id){
+
+  const warning=data.warnings.find(w=>w.id===id);
+
+  if(warning)
+    showWarning(warning);
+}
+
+function showWarning(warning){
+
+  const friend=getFriend(warning.friendId);
 
   openModal(`
+
     <div class="modal-head">
+
       <h2>🚨 警告回條</h2>
 
-      <button class="close-btn" onclick="closeModal()">
+      <button
+        class="close-btn"
+        onclick="closeModal()"
+      >
         ×
       </button>
+
     </div>
 
     <div id="warningPaper" class="warning-paper">
@@ -2064,7 +2532,7 @@ function showWarning(warning) {
       <div class="paper-inner">
 
         <div class="paper-school">
-          小氣簿　・　朋友關係管理部
+          小氣簿 ・ 朋友關係管理部
         </div>
 
         <div class="paper-title">
@@ -2076,32 +2544,57 @@ function showWarning(warning) {
         </div>
 
         <div class="paper-section paper-text">
+
           致：
-          <strong>${escapeHTML(friend?.name || "")}</strong>
+          <strong>
+            ${escapeHTML(friend?.name||"")}
+          </strong>
+
+          <br>
+
+          關係：
+          <strong>
+            ${escapeHTML(friend?.relation||"朋友")}
+          </strong>
+
         </div>
 
         <div class="paper-section paper-text">
-          經本簿記錄，閣下於
-          <strong>${formatDate(warning.date)}</strong>
-          發生以下事情：
+
+          發出人：
+          <strong>
+            ${escapeHTML(warning.issuer||"")}
+          </strong>
+
+          <br>
+
+          警告日期：
+          <strong>
+            ${formatDate(warning.date)}
+          </strong>
+
         </div>
 
         <div class="paper-warning">
+
           <strong>⚠️ 警告原因</strong>
+
           <br><br>
+
           ${escapeHTML(warning.reason)}
+
         </div>
 
         <div class="paper-section">
 
           <div class="paper-section-title">
-            老師評語：
+            ✍️ 本人評語
           </div>
 
           <div class="paper-text">
             ${escapeHTML(
-              warning.comment ||
-              "希望下次可以改善，唔好再令老師失望。"
+              warning.comment||
+              "希望下次可以改善，唔好再令本人失望。"
             )}
           </div>
 
@@ -2114,52 +2607,44 @@ function showWarning(warning) {
           </div>
 
           <div class="paper-check">
-            ${warning.level === "yellow" ? "☑" : "☐"}
+            ${warning.level==="yellow"?"☑":"☐"}
             已作口頭提醒
           </div>
 
           <div class="paper-check">
-            ${warning.level === "orange" ? "☑" : "☐"}
+            ${warning.level==="orange"?"☑":"☐"}
             已發出書面警告
           </div>
 
           <div class="paper-check">
-            ${warning.level === "red" ? "☑" : "☐"}
+            ${warning.level==="red"?"☑":"☐"}
             已列為嚴重警告
           </div>
 
           <div class="paper-check">
-            ${warning.level === "black" ? "☑" : "☐"}
+            ${warning.level==="black"?"☑":"☐"}
             最後通牒
           </div>
 
         </div>
 
         <div class="paper-warning">
+
           ⚠️ 如再次發生同類事件，本簿將保留相關紀錄，
           並視乎情況採取進一步行動。
+
           <br><br>
+
           <strong>
             「我唔係小氣，我只係記性比較好。」
           </strong>
-        </div>
 
-        <div class="paper-sign">
-          <div>
-            小氣簿班主任：
-            <span class="paper-line"></span>
-          </div>
-
-          <div>
-            日期：
-            <span class="paper-line"></span>
-          </div>
         </div>
 
         <div class="paper-section">
 
           <div class="paper-section-title">
-            ✂️ 學生／朋友回條
+            👤 朋友回條
           </div>
 
           <div class="paper-check">
@@ -2180,11 +2665,32 @@ function showWarning(warning) {
 
         </div>
 
+        <div class="paper-sign">
+
+          <div>
+            發出人：
+            <strong>
+              ${escapeHTML(warning.issuer||"")}
+            </strong>
+          </div>
+
+          <div>
+            朋友簽名：
+            <strong>
+              ${escapeHTML(
+                warning.friendSignature||"________________"
+              )}
+            </strong>
+          </div>
+
+        </div>
+
         <div class="paper-footer">
           小氣簿 Ultimate · 本通知書純屬朋友之間玩笑用途
         </div>
 
       </div>
+
     </div>
 
     <div class="warning-actions">
@@ -2193,7 +2699,7 @@ function showWarning(warning) {
         class="secondary-btn"
         onclick="printWarning()"
       >
-        🖨️ 列印／儲存 PDF
+        🖨️ 列印／PDF
       </button>
 
       <button
@@ -2204,197 +2710,280 @@ function showWarning(warning) {
       </button>
 
     </div>
+
+    <div style="
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-top:8px;
+    ">
+
+      <button
+        class="secondary-btn"
+        onclick="openWarningForm('${warning.friendId}','${warning.id}')"
+      >
+        ✏️ 修改
+      </button>
+
+      <button
+        class="danger-btn"
+        onclick="deleteWarning('${warning.id}')"
+      >
+        🗑️ 刪除
+      </button>
+
+    </div>
+
   `);
 }
 
-/* ---------- 分享警告信 ---------- */
+/* =========================
+   Delete Warning
+========================= */
 
-async function shareWarning() {
-  const text =
-    "🚨 小氣簿警告信\n\n" +
-    "呢位朋友已經收到正式警告。\n" +
-    "原因：「我只係記性比較好。」🙂";
+function deleteWarning(id){
 
-  if (navigator.share) {
-    try {
+  const warning=data.warnings.find(w=>w.id===id);
+
+  if(!warning)return;
+
+  if(!confirm(
+    "確定要刪除呢張警告信？\n\n刪除後就會從警告紀錄消失。"
+  ))return;
+
+  data.warnings=data.warnings.filter(
+    w=>w.id!==id
+  );
+
+  saveData();
+  closeModal();
+
+  if(selectedFriendId)
+    openFriendDetail(selectedFriendId);
+  else
+    render();
+
+  showToast("警告信已刪除 🗑️");
+}
+
+/* =========================
+   Share
+========================= */
+
+async function shareWarning(){
+
+  const warningText=
+    "🚨 小氣簿警告信\n\n"+
+    "本人已正式記錄此事件。\n"+
+    "「我唔係小氣，我只係記性比較好。」🙂";
+
+  if(navigator.share){
+
+    try{
+
       await navigator.share({
-        title: "小氣簿警告信",
-        text
+        title:"小氣簿警告信",
+        text:warningText
       });
 
       return;
-    } catch (e) {}
+
+    }catch(e){}
+
   }
 
-  try {
-    await navigator.clipboard.writeText(text);
+  try{
 
-    showToast("警告信內容已複製，可以貼去 WhatsApp 📋");
-  } catch (e) {
-    showToast("手機未能直接分享，請使用截圖。");
+    await navigator.clipboard.writeText(
+      warningText
+    );
+
+    showToast(
+      "警告信內容已複製，可以貼去 WhatsApp 📋"
+    );
+
+  }catch(e){
+
+    showToast(
+      "手機未能直接分享，請截圖。"
+    );
   }
 }
 
-/* ---------- 列印 ---------- */
+/* =========================
+   Print
+========================= */
 
-function printWarning() {
-  const paper = document.getElementById("warningPaper");
+function printWarning(){
 
-  if (!paper) return;
+  const paper=document.getElementById("warningPaper");
 
-  const printWindow = window.open("", "_blank");
+  if(!paper)return;
 
-  if (!printWindow) {
+  const win=window.open("","_blank");
+
+  if(!win){
+
     showToast("請允許瀏覽器開啟新視窗");
     return;
   }
 
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html lang="zh-Hant">
-    <head>
-      <meta charset="UTF-8">
-      <title>小氣簿警告信</title>
+  win.document.write(`
 
-      <style>
-        body {
-          margin: 0;
-          padding: 20px;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            "PingFang TC",
-            "Microsoft JhengHei",
-            sans-serif;
-          background: #eee;
-        }
+<!DOCTYPE html>
 
-        .warning-paper {
-          max-width: 700px;
-          margin: auto;
-          background: #fffdf6;
-          color: #29231f;
-          padding: 35px;
-          border: 2px solid #e1d7c4;
-          position: relative;
-        }
+<html lang="zh-Hant">
 
-        .warning-paper:before {
-          content: "";
-          position: absolute;
-          inset: 12px;
-          border: 1px dashed #c9bda8;
-          pointer-events: none;
-        }
+<head>
 
-        .paper-inner {
-          position: relative;
-          z-index: 1;
-        }
+<meta charset="UTF-8">
 
-        .paper-school {
-          text-align: center;
-          font-size: 12px;
-          letter-spacing: 2px;
-          color: #766b5e;
-        }
+<title>小氣簿警告信</title>
 
-        .paper-title {
-          text-align: center;
-          font-family: Georgia, serif;
-          font-size: 30px;
-          font-weight: 900;
-          margin: 10px 0 4px;
-        }
+<style>
 
-        .paper-subtitle {
-          text-align: center;
-          font-size: 13px;
-          color: #71685e;
-          margin-bottom: 20px;
-        }
-
-        .paper-section {
-          margin: 18px 0;
-        }
-
-        .paper-section-title {
-          font-weight: 900;
-          margin-bottom: 8px;
-        }
-
-        .paper-text {
-          font-size: 14px;
-          line-height: 1.8;
-        }
-
-        .paper-warning {
-          margin: 17px 0;
-          padding: 13px;
-          border: 1px solid #d6c7b0;
-          background: #faf3e5;
-          font-size: 13px;
-          line-height: 1.7;
-        }
-
-        .paper-check {
-          margin: 7px 0;
-          font-size: 13px;
-        }
-
-        .paper-sign {
-          margin-top: 25px;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 25px;
-          font-size: 12px;
-        }
-
-        .paper-line {
-          border-bottom: 1px solid #999;
-          display: inline-block;
-          min-width: 100px;
-        }
-
-        .paper-footer {
-          text-align: center;
-          margin-top: 25px;
-          color: #857a6d;
-          font-size: 10px;
-        }
-
-        @media print {
-          body {
-            background: white;
-            padding: 0;
-          }
-
-          .warning-paper {
-            border: none;
-          }
-        }
-      </style>
-    </head>
-
-    <body>
-      ${paper.outerHTML}
-
-      <script>
-        window.onload = function() {
-          window.print();
-        };
-      <\/script>
-    </body>
-    </html>
-  `);
-
-  printWindow.document.close();
+body{
+  margin:0;
+  padding:20px;
+  background:#eee;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "PingFang TC","Microsoft JhengHei",sans-serif;
 }
 
-/* ---------- 設定 ---------- */
+.warning-paper{
+  max-width:700px;
+  margin:auto;
+  background:#fffdf6;
+  color:#29231f;
+  padding:35px;
+  border:2px solid #e1d7c4;
+  position:relative;
+}
 
-function renderSettings() {
+.warning-paper:before{
+  content:"";
+  position:absolute;
+  inset:12px;
+  border:1px dashed #c9bda8;
+  pointer-events:none;
+}
+
+.paper-inner{
+  position:relative;
+  z-index:1;
+}
+
+.paper-school{
+  text-align:center;
+  font-size:12px;
+  letter-spacing:2px;
+  color:#766b5e;
+}
+
+.paper-title{
+  text-align:center;
+  font-family:Georgia,serif;
+  font-size:30px;
+  font-weight:900;
+  margin:10px 0 4px;
+}
+
+.paper-subtitle{
+  text-align:center;
+  font-size:13px;
+  color:#71685e;
+  margin-bottom:20px;
+}
+
+.paper-section{
+  margin:18px 0;
+}
+
+.paper-section-title{
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.paper-text{
+  font-size:14px;
+  line-height:1.8;
+}
+
+.paper-warning{
+  margin:17px 0;
+  padding:13px;
+  border:1px solid #d6c7b0;
+  background:#faf3e5;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.paper-check{
+  margin:7px 0;
+  font-size:13px;
+}
+
+.paper-sign{
+  margin-top:25px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+  font-size:12px;
+}
+
+.paper-footer{
+  text-align:center;
+  margin-top:25px;
+  color:#857a6d;
+  font-size:10px;
+}
+
+@media print{
+
+  body{
+    background:white;
+    padding:0;
+  }
+
+  .warning-paper{
+    border:none;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+${paper.outerHTML}
+
+<script>
+
+window.onload=function(){
+  window.print();
+};
+
+<\/script>
+
+</body>
+
+</html>
+
+  `);
+
+  win.document.close();
+}
+
+/* =========================
+   Settings
+========================= */
+
+function renderSettings(){
+
   return `
+
     <div class="section-head" style="margin-top:5px">
       <h2>⚙️ 設定</h2>
     </div>
@@ -2402,8 +2991,11 @@ function renderSettings() {
     <div class="settings-list">
 
       <div class="settings-item">
+
         <div>
+
           <strong>🌙 深色模式</strong>
+
           <div style="
             color:var(--muted);
             font-size:11px;
@@ -2411,28 +3003,33 @@ function renderSettings() {
           ">
             夜晚用會舒服啲
           </div>
+
         </div>
 
         <button
-          class="toggle ${
-            document.body.classList.contains("dark")
-            ? "on"
-            : ""
-          }"
-          onclick="toggleDarkMode(); render();"
+          class="toggle
+          ${document.body.classList.contains("dark")?"on":""}"
+          onclick="toggleDarkMode();render();"
         ></button>
+
       </div>
 
       <div class="settings-item">
+
         <div>
+
           <strong>💾 資料</strong>
+
           <div style="
             color:var(--muted);
             font-size:11px;
             margin-top:4px;
           ">
-            ${data.friends.length} 個朋友 · ${data.events.length} 宗罪證
+            ${data.friends.length} 個朋友 ·
+            ${data.events.length} 宗罪證 ·
+            ${data.warnings.length} 張警告信
           </div>
+
         </div>
 
         <button
@@ -2441,18 +3038,23 @@ function renderSettings() {
         >
           匯出
         </button>
+
       </div>
 
       <div class="settings-item">
+
         <div>
+
           <strong>📥 匯入資料</strong>
+
           <div style="
             color:var(--muted);
             font-size:11px;
             margin-top:4px;
           ">
-            從之前備份嘅 JSON 恢復
+            從之前備份恢復
           </div>
+
         </div>
 
         <button
@@ -2461,11 +3063,15 @@ function renderSettings() {
         >
           匯入
         </button>
+
       </div>
 
       <div class="settings-item">
+
         <div>
+
           <strong>⚠️ 清除全部資料</strong>
+
           <div style="
             color:var(--muted);
             font-size:11px;
@@ -2473,6 +3079,7 @@ function renderSettings() {
           ">
             此操作不能復原
           </div>
+
         </div>
 
         <button
@@ -2481,6 +3088,7 @@ function renderSettings() {
         >
           清除
         </button>
+
       </div>
 
     </div>
@@ -2500,31 +3108,33 @@ function renderSettings() {
       margin-top:30px;
       line-height:1.7;
     ">
-      小氣簿 Ultimate v1.0<br>
+      小氣簿 Ultimate v1.1<br>
       有啲嘢唔係我小氣，我只係有記錄。🙂
     </div>
+
   `;
 }
 
-/* ---------- 匯出／匯入 ---------- */
+/* =========================
+   Export
+========================= */
 
-function exportData() {
-  const json = JSON.stringify(data, null, 2);
+function exportData(){
 
-  const blob = new Blob(
+  const json=JSON.stringify(data,null,2);
+
+  const blob=new Blob(
     [json],
-    { type: "application/json" }
+    {type:"application/json"}
   );
 
-  const url = URL.createObjectURL(blob);
+  const url=URL.createObjectURL(blob);
 
-  const a = document.createElement("a");
+  const a=document.createElement("a");
 
-  a.href = url;
-  a.download =
-    "小氣簿備份-" +
-    today() +
-    ".json";
+  a.href=url;
+  a.download=
+    "小氣簿備份-"+today()+".json";
 
   a.click();
 
@@ -2533,65 +3143,88 @@ function exportData() {
   showToast("備份檔案已匯出 💾");
 }
 
-function importData(input) {
-  const file = input.files?.[0];
+/* =========================
+   Import
+========================= */
 
-  if (!file) return;
+function importData(input){
 
-  const reader = new FileReader();
+  const file=input.files?.[0];
 
-  reader.onload = function(e) {
-    try {
-      const imported = JSON.parse(e.target.result);
+  if(!file)return;
 
-      if (
+  const reader=new FileReader();
+
+  reader.onload=e=>{
+
+    try{
+
+      const imported=JSON.parse(e.target.result);
+
+      if(
         !imported ||
         !Array.isArray(imported.friends) ||
         !Array.isArray(imported.events)
-      ) {
-        throw new Error("格式不正確");
+      ){
+        throw new Error("invalid");
       }
 
-      data = {
-        friends: imported.friends,
-        events: imported.events,
-        warnings: Array.isArray(imported.warnings)
-          ? imported.warnings
-          : []
+      data={
+        friends:imported.friends,
+        events:imported.events,
+        warnings:Array.isArray(imported.warnings)
+          ?imported.warnings
+          :[]
       };
+
+      data.friends.forEach(f=>{
+        if(!f.relation)
+          f.relation="朋友";
+      });
+
+      data.warnings.forEach(w=>{
+        if(!w.issuer)w.issuer="";
+        if(!w.friendSignature)
+          w.friendSignature="";
+      });
 
       saveData();
       render();
 
       showToast("資料匯入成功 📥");
 
-    } catch (error) {
-      alert("呢個檔案唔係有效嘅小氣簿備份。");
+    }catch(e){
+
+      alert(
+        "呢個檔案唔係有效嘅小氣簿備份。"
+      );
+
     }
 
-    input.value = "";
+    input.value="";
   };
 
   reader.readAsText(file);
 }
 
-function clearAllData() {
-  const first = confirm(
+/* =========================
+   Clear
+========================= */
+
+function clearAllData(){
+
+  if(!confirm(
     "⚠️ 確定要清除全部資料？"
-  );
+  ))return;
 
-  if (!first) return;
-
-  const second = confirm(
+  if(!confirm(
     "真係確定？所有朋友、罪證、警告信都會永久刪除。"
-  );
+  ))return;
 
-  if (!second) return;
-
-  data = {
-    friends: [],
-    events: [],
-    warnings: []
+  data={
+    friends:[],
+    events:[],
+    warnings:[]
   };
 
   saveData();
@@ -2600,19 +3233,22 @@ function clearAllData() {
   showToast("所有資料已清除");
 }
 
-/* ---------- 鍵盤 ---------- */
+/* =========================
+   Escape
+========================= */
 
-document.addEventListener("keydown", function(e) {
-  if (e.key === "Escape") {
+document.addEventListener("keydown",e=>{
+
+  if(e.key==="Escape")
     closeModal();
-  }
+
 });
 
-/* ---------- 防止頁面離開時資料遺失 ---------- */
+window.addEventListener(
+  "beforeunload",
+  ()=>saveData()
+);
 
-window.addEventListener("beforeunload", function() {
-  saveData();
-});
 </script>
 
 </body>
